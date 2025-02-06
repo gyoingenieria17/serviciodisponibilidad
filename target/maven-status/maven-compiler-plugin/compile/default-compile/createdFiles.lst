@@ -5,6 +5,7 @@ com\example\serviciodisponibilidad\entity\TipoHabitacion.class
 com\example\serviciodisponibilidad\service\DisponibilidadService.class
 com\example\serviciodisponibilidad\entity\Disponibilidad.class
 com\example\serviciodisponibilidad\config\RabbitMQConfig.class
+com\example\serviciodisponibilidad\config\SecurityConfig.class
 com\example\serviciodisponibilidad\entity\Departamento.class
 com\example\serviciodisponibilidad\entity\Habitacion.class
 com\example\serviciodisponibilidad\listener\RabbitMQListener.class

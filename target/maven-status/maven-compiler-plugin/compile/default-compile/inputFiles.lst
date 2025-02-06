@@ -1,4 +1,5 @@
 D:\Documents\proyecto lucas\serviciodisponibilidad\src\main\java\com\example\serviciodisponibilidad\config\RabbitMQConfig.java
+D:\Documents\proyecto lucas\serviciodisponibilidad\src\main\java\com\example\serviciodisponibilidad\config\SecurityConfig.java
 D:\Documents\proyecto lucas\serviciodisponibilidad\src\main\java\com\example\serviciodisponibilidad\controller\DisponibilidadController.java
 D:\Documents\proyecto lucas\serviciodisponibilidad\src\main\java\com\example\serviciodisponibilidad\controller\RabbitMQController.java
 D:\Documents\proyecto lucas\serviciodisponibilidad\src\main\java\com\example\serviciodisponibilidad\dto\DisponibilidadMessage.java
