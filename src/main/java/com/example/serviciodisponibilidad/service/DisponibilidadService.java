@@ -118,6 +118,10 @@ public class DisponibilidadService {
         return disponibilidades;
     }
 
+    public List<Object[]> findHotelesConHabitacionesDisponiblesPorTipo(Integer idMunicipio, LocalDate fechaInicio, LocalDate fechaFin) {
+        return disponibilidadRepository.findHotelesConHabitacionesDisponiblesPorTipo(idMunicipio, fechaInicio, fechaFin);
+    }
+
     /**
      * Eliminar disponibilidad por ID.
      *

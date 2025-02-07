@@ -19,13 +19,31 @@ public interface DisponibilidadRepository extends JpaRepository<Disponibilidad, 
     long countByHabitacion_Hotel_IdHotelAndFechaAndEstadoActivo(Integer idHotel, LocalDate fecha, boolean estadoActivo);
 
     @Query("SELECT h.idHotel, h.nombre, h.direccion, h.telefono, COUNT(DISTINCT hab) " +
-       "FROM Habitacion hab " +
-       "LEFT JOIN hab.hotel h " +
-       "LEFT JOIN Disponibilidad d ON d.habitacion = hab AND d.fecha BETWEEN :fechaInicio AND :fechaFin " +
-       "WHERE h.municipio.idMunicipio = :idMunicipio " +
-       "AND (d.idDisponibilidad IS NULL OR (d.estadoActivo = true AND d.estadoDisponible = true)) " +
-       "GROUP BY h.idHotel, h.nombre, h.direccion, h.telefono")
+           "FROM Habitacion hab " +
+           "LEFT JOIN hab.hotel h " +
+           "LEFT JOIN Disponibilidad d ON d.habitacion = hab AND d.fecha BETWEEN :fechaInicio AND :fechaFin " +
+           "WHERE h.municipio.idMunicipio = :idMunicipio " +
+           "AND hab.estado = true " +
+           "AND (d.idDisponibilidad IS NULL OR (d.estadoActivo = true AND d.estadoDisponible = true)) " +
+           "GROUP BY h.idHotel, h.nombre, h.direccion, h.telefono")
     List<Object[]> findHotelesConHabitacionesDisponibles(
+        @Param("idMunicipio") Integer idMunicipio,
+        @Param("fechaInicio") LocalDate fechaInicio,
+        @Param("fechaFin") LocalDate fechaFin
+    );
+
+    @Query("SELECT h.idHotel, h.nombre, h.direccion, h.telefono, th.nombre AS tipo, " +
+           "SUM(CASE WHEN d.estadoDisponible = true OR d IS NULL THEN 1 ELSE 0 END) AS disponibles, " +
+           "SUM(CASE WHEN d.estadoDisponible = false THEN 1 ELSE 0 END) AS noDisponibles " +
+           "FROM Habitacion hab " +
+           "LEFT JOIN hab.hotel h " +
+           "LEFT JOIN hab.tipoHabitacion th " +
+           "LEFT JOIN Disponibilidad d ON d.habitacion = hab AND d.fecha BETWEEN :fechaInicio AND :fechaFin " +
+           "WHERE h.municipio.idMunicipio = :idMunicipio " +
+           "AND hab.estado = true " +
+           "AND (d.idDisponibilidad IS NULL OR d.estadoActivo = true) " +
+           "GROUP BY h.idHotel, h.nombre, h.direccion, h.telefono, th.nombre")
+    List<Object[]> findHotelesConHabitacionesDisponiblesPorTipo(
         @Param("idMunicipio") Integer idMunicipio,
         @Param("fechaInicio") LocalDate fechaInicio,
         @Param("fechaFin") LocalDate fechaFin

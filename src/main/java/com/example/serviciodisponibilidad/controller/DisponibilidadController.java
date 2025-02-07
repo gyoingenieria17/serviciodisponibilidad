@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/v1/disponibilidad")
@@ -110,6 +113,36 @@ public class DisponibilidadController {
             return ResponseEntity.noContent().build(); // 204 si no hay disponibilidades
         }
         return ResponseEntity.ok(disponibilidades);
+    }
+
+    @PostMapping("/municipio/disponibilidad-por-tipo")
+    public ResponseEntity<List<Map<String, Object>>> obtenerHotelesDisponiblesPorTipo(
+        @RequestBody DisponibilidadRequest request) {
+        try {
+            List<Object[]> resultados = disponibilidadService.findHotelesConHabitacionesDisponiblesPorTipo(
+                request.getIdMunicipio(), request.getFechaInicio(), request.getFechaFin());
+
+            if (resultados.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content si no hay disponibilidad
+            }
+
+            // Convertir resultados a una lista de mapas para una mejor legibilidad en la respuesta
+            List<Map<String, Object>> hotelesDisponibles = resultados.stream().map(resultado -> {
+                Map<String, Object> mapa = new HashMap<>();
+                mapa.put("idHotel", resultado[0]);
+                mapa.put("nombre", resultado[1]);
+                mapa.put("direccion", resultado[2]);
+                mapa.put("telefono", resultado[3]);
+                mapa.put("tipo", resultado[4]);
+                mapa.put("disponibles", resultado[5]);
+                mapa.put("noDisponibles", resultado[6]);
+                return mapa;
+            }).collect(Collectors.toList());
+
+            return ResponseEntity.ok(hotelesDisponibles);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     /**

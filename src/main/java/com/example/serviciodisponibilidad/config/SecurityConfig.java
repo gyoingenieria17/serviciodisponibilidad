@@ -22,10 +22,12 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Configuración CORS
             .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF (solo en pruebas)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/api/v1/usuario/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/usuario/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/v1/usuario/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/usuario/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/disponibilidad/**").permitAll() //.hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/disponibilidad/hoteles-disponibles-por-tipo").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/disponibilidad/rabbitmq/municipio/disponibilidad-por-tipo").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/disponibilidad/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/v1/disponibilidad/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/disponibliad/**").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(httpBasic -> {});  // Autenticación básica sin configuración extra
@@ -37,7 +39,7 @@ public class SecurityConfig {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("*"));  // Origen del frontend (ajusta según tu caso)
+        //config.setAllowedOrigins(List.of("*"));  // Origen del frontend (ajusta según tu caso)
         config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedHeaders(List.of("*"));  // Permitir todos los headers
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Métodos permitidos
