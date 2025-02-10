@@ -38,11 +38,10 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        //config.setAllowedOrigins(List.of("*"));  // Origen del frontend (ajusta según tu caso)
-        config.setAllowedOriginPatterns(Arrays.asList("*"));
-        config.setAllowedHeaders(List.of("*"));  // Permitir todos los headers
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Métodos permitidos
+        config.setAllowCredentials(true);  // Permitir credenciales (cookies, etc.)
+        config.setAllowedOriginPatterns(Arrays.asList("*"));  // Permitir tu IP pública
+        config.addAllowedHeader("*");  // Permitir todos los headers
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Métodos permitidos
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
